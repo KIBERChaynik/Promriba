@@ -1,1 +1,1964 @@
 
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Промрыба — Рыбное стритфуд-кафе в Калининграде</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #0a1628;
+            --navy-light: #121f38;
+            --navy-mid: #1a2d4a;
+            --blue: #1e4d8c;
+            --gold: #f0a500;
+            --gold-light: #ffc947;
+            --orange: #ff6b35;
+            --white: #f8f9fa;
+            --gray: #8899aa;
+            --light-gray: #c5d0dc;
+            --card-bg: rgba(18, 31, 56, 0.8);
+            --gradient-gold: linear-gradient(135deg, #f0a500, #ff6b35);
+            --gradient-blue: linear-gradient(135deg, #1e4d8c, #0a1628);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--navy);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--blue);
+            border-radius: 4px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 10px 40px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--gradient-gold);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-phone {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-phone:hover {
+            color: var(--gold-light);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 28px;
+            height: 2px;
+            background: var(--white);
+            margin: 6px 0;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(10, 22, 40, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--gold);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.4);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(10, 22, 40, 0.3) 0%, rgba(10, 22, 40, 0.8) 60%, var(--navy) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(240, 165, 0, 0.15);
+            border: 1px solid rgba(240, 165, 0, 0.3);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 24px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero-badge .star {
+            font-size: 16px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-title .highlight {
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: var(--light-gray);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-weight: 400;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            border-radius: 60px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--gradient-gold);
+            color: var(--navy);
+            box-shadow: 0 8px 30px rgba(240, 165, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(240, 165, 0, 0.45);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .hero-stats {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 60px;
+            animation: fadeInUp 0.8s ease 0.8s both;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .hero-stat-label {
+            font-size: 13px;
+            color: var(--gray);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* Floating elements */
+        .floating-element {
+            position: absolute;
+            z-index: 2;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 15%;
+            left: 8%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 25%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 25%;
+            left: 12%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* About Section */
+        .section {
+            padding: 100px 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 5vw, 52px);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .section-desc {
+            font-size: 17px;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-image-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(10, 22, 40, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 16px 24px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .about-image-overlay .icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-gold);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .about-image-overlay .text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .about-image-overlay .text span {
+            display: block;
+            font-size: 12px;
+            color: var(--gray);
+            font-weight: 400;
+        }
+
+        .about-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            color: var(--light-gray);
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 30px;
+        }
+
+        .about-feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: var(--card-bg);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .about-feature .icon {
+            font-size: 20px;
+        }
+
+        .about-feature .text {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 80px 40px;
+            background: var(--navy-light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--navy-mid);
+            border-radius: 20px;
+            padding: 36px 28px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(240, 165, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(240, 165, 0, 0.1);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 20px;
+        }
+
+        .feature-card h4 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* Menu Section */
+        .menu-section {
+            padding: 100px 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .menu-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 48px;
+        }
+
+        .menu-cat-btn {
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: transparent;
+            color: var(--light-gray);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .menu-cat-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .menu-cat-btn.active {
+            background: var(--gradient-gold);
+            color: var(--navy);
+            border-color: transparent;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .menu-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.4s ease;
+            display: none;
+        }
+
+        .menu-card.visible {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(240, 165, 0, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-card-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .menu-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .menu-card:hover .menu-card-image img {
+            transform: scale(1.08);
+        }
+
+        .menu-card-weight {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(10, 22, 40, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .menu-card-body {
+            padding: 20px;
+        }
+
+        .menu-card-name {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .menu-card-desc {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .menu-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .menu-card-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .menu-card-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--gradient-gold);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--navy);
+            transition: all 0.3s;
+        }
+
+        .menu-card-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(240, 165, 0, 0.4);
+        }
+
+        .menu-cta {
+            text-align: center;
+            margin-top: 48px;
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            padding: 100px 40px;
+            background: var(--navy-light);
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: var(--navy-mid);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.4s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(240, 165, 0, 0.2);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .review-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .review-info h5 {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .review-info span {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .review-stars {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 14px;
+        }
+
+        .review-stars span {
+            color: var(--gold);
+            font-size: 14px;
+        }
+
+        .review-text {
+            font-size: 14px;
+            color: var(--light-gray);
+            line-height: 1.7;
+        }
+
+        .review-text .more {
+            color: var(--gold);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .reviews-total {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 100px 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .contact-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .contact-card .icon {
+            width: 52px;
+            height: 52px;
+            background: rgba(240, 165, 0, 0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .contact-card h5 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .contact-card p {
+            font-size: 14px;
+            color: var(--light-gray);
+            line-height: 1.6;
+        }
+
+        .contact-card a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-card a:hover {
+            color: var(--gold-light);
+        }
+
+        .contact-map {
+            border-radius: 24px;
+            overflow: hidden;
+            min-height: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .contact-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: grayscale(0.3) contrast(1.1);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--navy-light);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 60px 40px 30px;
+        }
+
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand .nav-logo {
+            margin-bottom: 16px;
+        }
+
+        .footer-brand p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.7;
+            max-width: 320px;
+        }
+
+        .footer-col h6 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-bottom p {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-social {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-social:hover {
+            background: var(--gradient-gold);
+            color: var(--navy);
+        }
+
+        /* Cashback Banner */
+        .cashback-banner {
+            background: var(--gradient-gold);
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cashback-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: rotateBg 20s linear infinite;
+        }
+
+        @keyframes rotateBg {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cashback-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cashback-banner h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 900;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .cashback-banner p {
+            font-size: 17px;
+            color: rgba(10, 22, 40, 0.7);
+            font-weight: 500;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .reviews-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 20px;
+            }
+
+            .nav-links, .nav-phone {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .section {
+                padding: 60px 20px;
+            }
+
+            .hero-stats {
+                gap: 24px;
+            }
+
+            .hero-stat-value {
+                font-size: 28px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-features {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .floating-element {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .menu-categories {
+                gap: 6px;
+            }
+
+            .menu-cat-btn {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+        }
+
+        /* Smooth scroll offset for fixed nav */
+        section[id] {
+            scroll-margin-top: 80px;
+        }
+
+        /* Particle background for hero */
+        .particles {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(240, 165, 0, 0.3);
+            border-radius: 50%;
+            animation: particleFloat linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-icon">🐟</div>
+            <span class="nav-logo-text">ПРОМРЫБА</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#about">О нас</a></li>
+            <li><a href="#menu">Меню</a></li>
+            <li><a href="#reviews">Отзывы</a></li>
+            <li><a href="#contact">Контакты</a></li>
+        </ul>
+        <a href="tel:+79052499733" class="nav-phone">📞 +7 (905) 249-97-33</a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Меню">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#about" onclick="closeMobileMenu()">О нас</a>
+        <a href="#menu" onclick="closeMobileMenu()">Меню</a>
+        <a href="#reviews" onclick="closeMobileMenu()">Отзывы</a>
+        <a href="#contact" onclick="closeMobileMenu()">Контакты</a>
+        <a href="tel:+79052499733" style="color: var(--gold);">📞 +7 (905) 249-97-33</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <img id="heroBgImage" src="" alt="Промрыба">
+        </div>
+        <div class="hero-overlay"></div>
+
+        <div class="particles" id="particles"></div>
+
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="star">⭐</span>
+                Рейтинг 5,0 — 1283 отзыва
+            </div>
+            <h1 class="hero-title">
+                Свежайшие<br><span class="highlight">морепродукты</span><br>в Калининграде
+            </h1>
+            <p class="hero-subtitle">
+                Рыбное стритфуд-кафе на берегу Балтийского моря с 2018 года. Уникальная концепция, свежие морепродукты и неповторимый вкус.
+            </p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn btn-primary">🍽 Смотреть меню</a>
+                <a href="#contact" class="btn btn-secondary">📍 Как добраться</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">5.0</div>
+                    <div class="hero-stat-label">Рейтинг</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">1283</div>
+                    <div class="hero-stat-label">Отзыва</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">2018</div>
+                    <div class="hero-stat-label">Год основания</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="about-grid">
+            <div class="about-image reveal">
+                <img id="aboutImage" src="" alt="О Промрыба">
+                <div class="about-image-overlay">
+                    <div class="icon">🏆</div>
+                    <div class="text">
+                        Хорошее место 2026
+                        <span>Награда Яндекс Карт</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-text reveal">
+                <span class="section-tag">О нашем кафе</span>
+                <h3>С 2018 года кормим Калининград свежей рыбой</h3>
+                <p>
+                    «Промрыба» — это рыбное стритфуд-кафе, которое появилось в 2018 году на берегу Балтийского моря в Зеленоградске. Оно сразу полюбилось местным за свежайшие морепродукты и уникальную концепцию.
+                </p>
+                <p>
+                    Сегодня мы работаем в Калининграде и продолжаем радовать гостей блюдами из свежих морепродуктов, приготовленными с душой и вниманием к деталям.
+                </p>
+                <div class="about-features">
+                    <div class="about-feature">
+                        <span class="icon">🚗</span>
+                        <span class="text">Доставка еды</span>
+                    </div>
+                    <div class="about-feature">
+                        <span class="icon">🥡</span>
+                        <span class="text">Еда навынос</span>
+                    </div>
+                    <div class="about-feature">
+                        <span class="icon">☕</span>
+                        <span class="text">Кофе с собой</span>
+                    </div>
+                    <div class="about-feature">
+                        <span class="icon">🐕</span>
+                        <span class="text">Можно с собакой</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon">🐟</div>
+                <h4>Свежие морепродукты</h4>
+                <p>Только свежая рыба и морепродукты от проверенных поставщиков</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🔥</div>
+                <h4>Гриль и угли</h4>
+                <p>Готовим на углях — уникальный вкус и аромат копчения</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">⚡</div>
+                <h4>Быстрое обслуживание</h4>
+                <p>Стритфуд формат — быстро, вкусно и удобно</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">💰</div>
+                <h4>Кешбэк 5%</h4>
+                <p>Кешбэк на все покупки баллами в Яндекс Картах</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section" id="menu">
+        <div class="section-header reveal">
+            <span class="section-tag">Наше меню</span>
+            <h2 class="section-title">Блюда из свежих<br>морепродуктов</h2>
+            <p class="section-desc">Обновлено 20 мая. Попробуйте наши фирменные блюда</p>
+        </div>
+
+        <div class="menu-categories" id="menuCategories">
+            <button class="menu-cat-btn active" data-cat="all">Все</button>
+            <button class="menu-cat-btn" data-cat="shaverma">Шаверма</button>
+            <button class="menu-cat-btn" data-cat="grill">Блюда на углях</button>
+            <button class="menu-cat-btn" data-cat="soup">Супы</button>
+            <button class="menu-cat-btn" data-cat="wok">Вок</button>
+            <button class="menu-cat-btn" data-cat="hot">Горячие закуски</button>
+            <button class="menu-cat-btn" data-cat="salad">Салаты</button>
+            <button class="menu-cat-btn" data-cat="snack">Закуски</button>
+            <button class="menu-cat-btn" data-cat="garnish">Гарниры</button>
+            <button class="menu-cat-btn" data-cat="drink">Напитки</button>
+            <button class="menu-cat-btn" data-cat="sauce">Соусы</button>
+            <button class="menu-cat-btn" data-cat="bakery">Выпечка</button>
+        </div>
+
+        <div class="menu-grid" id="menuGrid">
+            <!-- Cards will be generated by JS -->
+        </div>
+
+        <div class="menu-cta reveal">
+            <p style="color: var(--gray); font-size: 14px; margin-bottom: 16px;">Это меню доставки. На месте блюда и цены могут отличаться от указанных.</p>
+        </div>
+    </section>
+
+    <!-- Cashback Banner -->
+    <section class="cashback-banner">
+        <div class="cashback-content">
+            <h2>🎁 ДАРИМ ГРИЛЬ</h2>
+            <p>Активируйте 5% кешбэка баллами на любимые покупки в Яндекс Картах</p>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews-section" id="reviews">
+        <div class="section-header reveal">
+            <span class="section-tag">Отзывы</span>
+            <h2 class="section-title">Что говорят наши гости</h2>
+            <p class="section-desc">723 отзыва · Рейтинг 5,0</p>
+        </div>
+
+        <div class="reviews-grid">
+            <div class="review-card reveal">
+                <div class="review-header">
+                    <div class="review-avatar">АД</div>
+                    <div class="review-info">
+                        <h5>Алексей Д.</h5>
+                        <span>Дегустатор 6 уровня · 4 мая</span>
+                    </div>
+                </div>
+                <div class="review-stars">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                </div>
+                <div class="review-text">
+                    Добрый день! На неделе посетили это заведение. Персонал добрый, отзывчивый, знают своё меню в совершенстве. Вкусная свежая рыба, порции большие. Рекомендую!
+                    <span class="more">Ещё</span>
+                </div>
+            </div>
+
+            <div class="review-card reveal">
+                <div class="review-header">
+                    <div class="review-avatar">НД</div>
+                    <div class="review-info">
+                        <h5>Николай Доктор</h5>
+                        <span>Дегустатор 6 уровня · 7 января</span>
+                    </div>
+                </div>
+                <div class="review-stars">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                </div>
+                <div class="review-text">
+                    Заведение с уютной атмосферой и приятным интерьером, аппетитным ассортиментом разнообразной рыбной продукции. Что-либо выделить из меню — проблематично. Всё вкусно!
+                    <span class="more">Ещё</span>
+                </div>
+            </div>
+
+            <div class="review-card reveal">
+                <div class="review-header">
+                    <div class="review-avatar">ML</div>
+                    <div class="review-info">
+                        <h5>Margo Lapi</h5>
+                        <span>Дегустатор 4 уровня · 23 апреля</span>
+                    </div>
+                </div>
+                <div class="review-stars">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                </div>
+                <div class="review-text">
+                    Очень нравится точка на Ленинском: уютно, просторно, приветливый коллектив 😍 перепробовала уже почти все блюда в меню. Если не любите майонез — это место для вас!
+                    <span class="more">Ещё</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="reviews-total reveal">
+            <a href="#" class="btn btn-secondary">Посмотреть все 723 отзыва</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="section-header reveal">
+            <span class="section-tag">Контакты</span>
+            <h2 class="section-title">Как нас найти</h2>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-info reveal">
+                <div class="contact-card">
+                    <div class="icon">📍</div>
+                    <div>
+                        <h5>Адрес</h5>
+                        <p>Ленинский просп., 18, Калининград</p>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="icon">📞</div>
+                    <div>
+                        <h5>Телефон</h5>
+                        <p><a href="tel:+79052499733">+7 (905) 249-97-33</a></p>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="icon">🕐</div>
+                    <div>
+                        <h5>Время работы</h5>
+                        <p>Ежедневно до 22:00</p>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="icon">🏷️</div>
+                    <div>
+                        <h5>Кешбэк</h5>
+                        <p>5% кешбэка баллами на все покупки</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-map reveal">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2311.5!2d20.5167!3d54.7067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTTCsDQyJzI0LjEiTiAyMMKwMzEnMDAuMSJF!5e0!3m2!1sru!2sru!4v1" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href="#" class="nav-logo">
+                    <div class="nav-logo-icon">🐟</div>
+                    <span class="nav-logo-text">ПРОМРЫБА</span>
+                </a>
+                <p>Рыбное стритфуд-кафе в Калининграде. Свежайшие морепродукты с 2018 года.</p>
+            </div>
+            <div class="footer-col">
+                <h6>Навигация</h6>
+                <ul>
+                    <li><a href="#about">О нас</a></li>
+                    <li><a href="#menu">Меню</a></li>
+                    <li><a href="#reviews">Отзывы</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h6>Меню</h6>
+                <ul>
+                    <li><a href="#menu">Шаверма</a></li>
+                    <li><a href="#menu">Блюда на углях</a></li>
+                    <li><a href="#menu">Супы</a></li>
+                    <li><a href="#menu">Вок</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h6>Контакты</h6>
+                <ul>
+                    <li><a href="tel:+79052499733">+7 (905) 249-97-33</a></li>
+                    <li><a href="#">Ленинский просп., 18</a></li>
+                    <li><a href="#">Калининград</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2018–2026 Промрыба. Все права защищены.</p>
+            <div class="footer-socials">
+                <a href="#" class="footer-social" aria-label="VK">VK</a>
+                <a href="#" class="footer-social" aria-label="Telegram">TG</a>
+                <a href="#" class="footer-social" aria-label="Instagram">IG</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Data
+        const menuItems = [
+            {
+                name: "Шаверма с кальмаром",
+                desc: "Сочное филе нежного кальмара, свежие овощи – огурцы, помидоры, болгарский перец, а также листья салата айсберг, фирменный соус и тонкий лаваш.",
+                price: "820 ₽",
+                weight: "350 г",
+                cat: "shaverma"
+            },
+            {
+                name: "Шаверма с копченой скумбрией",
+                desc: "Необыкновенное сочетание копченой рыбы с горячим лавашом с добавлением свежих овощей и фирменного соуса.",
+                price: "870 ₽",
+                weight: "350 г",
+                cat: "shaverma"
+            },
+            {
+                name: "Шаверма с королевской креветкой",
+                desc: "Королевская креветка, фирменный соус и свежие овощи, завёрнутые в тонкий лаваш — идеальный выбор для обеда или ужина.",
+                price: "1050 ₽",
+                weight: "350 г",
+                cat: "shaverma"
+            },
+            {
+                name: "Шаверма с креветкой",
+                desc: "Сочная креветка, свежий огурец и помидор, хрустящий салат айсберг — всё это мы завернули в тонкий лаваш и щедро дополнили фирменным соусом.",
+                price: "900 ₽",
+                weight: "350 г",
+                cat: "shaverma"
+            },
+            {
+                name: "Шаверма с мидиями",
+                desc: "Тонкий лаваш, обжаренные мидии, фирменный соус и свежие овощи: огурец и помидор, а также хрустящий салат айсберг.",
+                price: "610 ₽",
+                weight: "350 г",
+                cat: "shaverma"
+            },
+            {
+                name: "Шаверма с печеным перцем",
+                desc: "Сочетание овощей и фирменного соуса делает его сочным и ароматным. Хрустящий лаваш, свежие овощи и соус прекрасно гармонируют друг с другом.",
+                price: "480 ₽",
+                weight: "350 г",
+                cat: "shaverma"
+            },
+            {
+                name: "Шаверма с судаком",
+                desc: "Нежный судак, пряное масло, фирменный соус и свежие овощи, завёрнутые в тонкий лаваш — идеальный выбор для обеда или ужина.",
+                price: "750 ₽",
+                weight: "350 г",
+                cat: "shaverma"
+            },
+            {
+                name: "Шаверма с тунцом",
+                desc: "Нежное филе тунца, обжаренное на гриле, свежие овощи: салат айсберг, огурцы и помидоры, а также фирменный соус в лаваше.",
+                price: "820 ₽",
+                weight: "350 г",
+                cat: "shaverma"
+            },
+            {
+                name: "Кальмар на углях",
+                desc: "Разница в заявленном весе может отличаться на 5-10 граммов. Приятного аппетита!",
+                price: "1012 ₽",
+                weight: "300 г",
+                cat: "grill"
+            },
+            {
+                name: "Камбала на углях",
+                desc: "Дальневосточная камбала приготовлена на углях.",
+                price: "1620 ₽",
+                weight: "600 г",
+                cat: "grill"
+            },
+            {
+                name: "Лангустин на углях с пастой Том ям",
+                desc: "Разница в заявленном весе может отличаться на 5-10 граммов. Приятного аппетита!",
+                price: "999 ₽",
+                weight: "200 г",
+                cat: "grill"
+            },
+            {
+                name: "Судак на углях",
+                desc: "Приятного аппетита!",
+                price: "1215 ₽",
+                weight: "300 г",
+                cat: "grill"
+            },
+            {
+                name: "Лапша с морепродуктами",
+                desc: "Наш фирменный суп. Ароматный креветочный бульон, нежная лапша лагман, мидии, филе кальмара и креветки, свежий огурец, кинза, паста том ям, чеснок, специи и лайм.",
+                price: "950 ₽",
+                weight: "500 г",
+                cat: "soup"
+            },
+            {
+                name: "Уха наваристая (большая)",
+                desc: "Вкусный и ароматный суп из рыбного бульона, нежного филе судака без костей, картофеля и помидоров. Украшают свежим укропом и петрушкой.",
+                price: "472 ₽",
+                weight: "500 г",
+                cat: "soup"
+            },
+            {
+                name: "Уха наваристая (маленькая)",
+                desc: "Отличный вариант для обеда. Аппетитный суп из рыбного бульона, филе судака без костей, картофеля, помидоров и ароматной зелени.",
+                price: "405 ₽",
+                weight: "350 г",
+                cat: "soup"
+            },
+            {
+                name: "Вок с креветкой и кальмаром",
+                desc: "Лапша, овощи и два вида морских деликатесов. Заправка на основе рыбного бульона и соуса хойсин делает его особенным.",
+                price: "877 ₽",
+                weight: "390 г",
+                cat: "wok"
+            },
+            {
+                name: "Креветка по-тайски",
+                desc: "Королевская креветка обжарена в кунжутном масле с добавлением чеснока, пряных трав и специй. Необыкновенный запоминающий вкус.",
+                price: "950 ₽",
+                weight: "250 г",
+                cat: "hot"
+            },
+            {
+                name: "Семечки из мидии с фирменным соусом",
+                desc: "Филе мидии, обжаренное в смеси панко во фритюре, подается с фирменным соусом. Отлично подходит под пенные напитки.",
+                price: "742 ₽",
+                weight: "200 г",
+                cat: "hot"
+            },
+            {
+                name: "Салат Овощной",
+                desc: "Свежие помидоры, огурцы, болгарский перец, а пряное масло, соль, перец и специи добавляют блюду пикантности.",
+                price: "472 ₽",
+                weight: "260 г",
+                cat: "salad"
+            },
+            {
+                name: "Хе с судаком",
+                desc: "Свежие овощи: помидоры, огурцы и сладкий перец, а также репчатый лук и филе судака. Заправка из соевого соуса, растительного масла, уксуса и пряностей.",
+                price: "750 ₽",
+                weight: "230 г",
+                cat: "salad"
+            },
+            {
+                name: "Карпаччо из балтийской кильки",
+                desc: "Филе балтийской кильки, с бородинским хлебом, луком. Хорошее дополнение к пиву.",
+                price: "553 ₽",
+                weight: "170 г",
+                cat: "snack"
+            },
+            {
+                name: "Картофель фри большой",
+                desc: "Подается с кетчупом.",
+                price: "472 ₽",
+                weight: "200 г",
+                cat: "garnish"
+            },
+            {
+                name: "Картофель фри маленький",
+                desc: "Подается с кетчупом.",
+                price: "350 ₽",
+                weight: "140 г",
+                cat: "garnish"
+            },
+            {
+                name: "Овощи гриль",
+                desc: "Кабачок, баклажан и болгарский перец, приправленные ароматными специями и маслом. Отличное дополнение к нашим блюдам.",
+                price: "540 ₽",
+                weight: "160 г",
+                cat: "garnish"
+            },
+            {
+                name: "Морс Облепиха",
+                desc: "Морс собственного приготовления.",
+                price: "200 ₽",
+                weight: "200 мл",
+                cat: "drink"
+            },
+            {
+                name: "Морс облепиха",
+                desc: "Морс собственного приготовления.",
+                price: "300 ₽",
+                weight: "500 мл",
+                cat: "drink"
+            },
+            {
+                name: "Морс смородина",
+                desc: "Морс собственного приготовления.",
+                price: "300 ₽",
+                weight: "500 мл",
+                cat: "drink"
+            },
+            {
+                name: "Соус Фирменный",
+                desc: "Фирменный соус от Промрыба.",
+                price: "67 ₽",
+                weight: "30 г",
+                cat: "sauce"
+            },
+            {
+                name: "Соус Чесночный",
+                desc: "Чесночный соус.",
+                price: "67 ₽",
+                weight: "25 г",
+                cat: "sauce"
+            },
+            {
+                name: "Лаваш грузинский",
+                desc: "Нарезан порционно.",
+                price: "67 ₽",
+                weight: "70 г",
+                cat: "bakery"
+            }
+        ];
+
+        // Generate Menu Cards
+        const menuGrid = document.getElementById('menuGrid');
+        const categoryImages = {
+            shaverma: "шаверма с морепродуктами, свежие овощи, лаваш, ресторанная фотография, темный фон",
+            grill: "рыба на гриле, угли, кальмар на гриле, ресторанная фотография, дым",
+            soup: "уха, рыбный суп, ресторанная подача, свежая зелень, темный фон",
+            wok: "вок с морепродуктами, лапша, азиатская кухня, ресторанная фотография",
+            hot: "жареные креветки, горячая закуска, ресторанная подача, темный фон",
+            salad: "свежий салат с рыбой, ресторанная фотография, яркая подача",
+            snack: "карпаччо из рыбы, закуска, ресторанная подача, темный фон",
+            garnish: "картофель фри, овощи гриль, гарнир, ресторанная фотография",
+            drink: "морс облепиховый, напиток в стакане, ягоды, ресторанная фотография",
+            sauce: "соус в соуснике, ресторанная подача, темный фон",
+            bakery: "свежий лаваш, хлеб, выпечка, ресторанная фотография"
+        };
+
+        function generateMenuCards() {
+            menuGrid.innerHTML = '';
+            menuItems.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = 'menu-card visible';
+                card.dataset.category = item.cat;
+
+                const imgPrompt = categoryImages[item.cat] || "рыбное блюдо, ресторанная фотография";
+
+                card.innerHTML = `
+                    <div class="menu-card-image">
+                        <img class="menu-card-img" src="" alt="${item.name}" data-prompt="${imgPrompt}">
+                        <div class="menu-card-weight">${item.weight}</div>
+                    </div>
+                    <div class="menu-card-body">
+                        <h4 class="menu-card-name">${item.name}</h4>
+                        <p class="menu-card-desc">${item.desc}</p>
+                        <div class="menu-card-footer">
+                            <span class="menu-card-price">${item.price}</span>
+                            <button class="menu-card-btn" aria-label="Добавить">+</button>
+                        </div>
+                    </div>
+                `;
+
+                menuGrid.appendChild(card);
+            });
+        }
+
+        generateMenuCards();
+
+        // Menu category filter
+        const catBtns = document.querySelectorAll('.menu-cat-btn');
+        catBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                catBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const cat = btn.dataset.cat;
+                document.querySelectorAll('.menu-card').forEach(card => {
+                    if (cat === 'all' || card.dataset.category === cat) {
+                        card.classList.add('visible');
+                        card.style.animation = 'fadeInUp 0.5s ease';
+                    } else {
+                        card.classList.remove('visible');
+                    }
+                });
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        function closeMobileMenu() {
+            mobileMenuBtn.classList.remove('active');
+            mobileMenu.classList.remove('active');
+        }
+
+        // Scroll reveal
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.width = (Math.random() * 4 + 2) + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.animationDuration = (Math.random() * 10 + 8) + 's';
+            particle.style.animationDelay = (Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Image generation
+        const imagesToGenerate = [
+            { id: 'heroBgImage', prompt: "seafood street food cafe at the Baltic sea coast, fresh grilled fish and seafood on display, golden hour lighting, professional food photography, atmospheric, warm colors, outdoor cafe setting, Baltic sea in background, high quality, photorealistic" },
+            { id: 'aboutImage', prompt: "cozy modern seafood street food cafe interior, warm lighting, wooden tables, fish dishes, Scandinavian design, Калининград cafe interior, professional photography, inviting atmosphere" }
+        ];
+
+        // Generate menu item images
+        const menuImages = document.querySelectorAll('.menu-card-img');
+        const uniqueMenuPrompts = new Set();
+        menuImages.forEach(img => {
+            uniqueMenuPrompts.add(img.dataset.prompt);
+        });
+
+        // Batch generate images
+        async function generateImages(imagesList) {
+            const results = {};
+            for (const img of imagesList) {
+                try {
+                    const response = await image_gen({ prompt: img.prompt });
+                    results[img.id] = response.url;
+                } catch (e) {
+                    console.error('Failed to generate image:', e);
+                }
+            }
+            return results;
+        }
+
+        // Generate hero and about images
+        generateImages(imagesToGenerate).then(results => {
+            for (const [id, url] of Object.entries(results)) {
+                const el = document.getElementById(id);
+                if (el) el.src = url;
+            }
+        });
+
+        // Generate menu images
+        const menuImagePrompts = [];
+        const menuImageMap = {};
+        let imgCounter = 0;
+        menuImages.forEach(img => {
+            const key = img.dataset.prompt;
+            if (!menuImageMap[key]) {
+                menuImageMap[key] = [];
+                menuImagePrompts.push({ id: `menu_img_${imgCounter++}`, prompt: key });
+            }
+            menuImageMap[key].push(img);
+        });
+
+        if (menuImagePrompts.length > 0) {
+            generateImages(menuImagePrompts).then(results => {
+                for (const [id, url] of Object.entries(results)) {
+                    if (menuImageMap[id]) {
+                        menuImageMap[id].forEach(img => {
+                            img.src = url;
+                        });
+                    }
+                }
+            });
+        }
+
+        // Add button click feedback
+        document.querySelectorAll('.menu-card-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.textContent = '✓';
+                this.style.background = '#22c55e';
+                setTimeout(() => {
+                    this.textContent = '+';
+                    this.style.background = '';
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>
+
